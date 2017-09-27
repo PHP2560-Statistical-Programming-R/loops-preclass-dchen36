@@ -1,0 +1,126 @@
+---
+title: "David Chen - Pre-Class 9.27.2017"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+
+1
+```{r}
+for (i in 1:50) {
+  print(i)
+}
+```
+
+2A
+```{r}
+x = 0:1000
+y = 0
+
+for (i in 1:length(x)){
+  y <- y + x[i]
+}   
+y
+```
+2B
+```{r}
+x1 = seq(0,1000, by = 2)
+y1 = 0
+
+for (i in 1:length(x1)){
+  y1 <- y1 + x1[i]
+}   
+y1
+```
+2C
+```{r}
+x <- seq(0,1000)
+sum(x[1:1001])
+
+y <- seq(0,1000, by = 2)
+sum(y[1:501])
+```
+3A
+```{r} 
+survey <- data.frame( "participant" = c(1, 2, 3, 4, 5, 6), "q1" = c(5, 3, 2, 7, 11, 0), "q2" = c(4, 2, 2, 5, -10, 99), "q3" = c(-4, -3, 4, 2, 9, 10), "q4" = c(-30, 5, 2, 23, 4, 2), "q5" = c(88, 4, -20, 2, 4, 2) )
+
+survey.clean <- survey[NULL,]
+for (i in 1:nrow(survey)) {
+  ifelse(survey[i,2] > 5|survey[i,2] < 1, survey[i,2] <- NA, NA)
+  ifelse(survey[i,3] > 5|survey[i,3] < 1, survey[i,3] <- NA, NA)
+  ifelse(survey[i,4] > 5|survey[i,4] < 1, survey[i,4] <- NA, NA)
+  ifelse(survey[i,5] > 5|survey[i,5] < 1, survey[i,5] <- NA, NA)
+  ifelse(survey[i,6] > 5|survey[i,6] < 1, survey[i,6] <- NA, NA)
+  survey.clean <- rbind(survey.clean,survey[i,])
+}
+survey.clean  
+
+```
+3B
+```{r} 
+survey <- data.frame( "participant" = c(1, 2, 3, 4, 5, 6), "q1" = c(5, 3, 2, 7, 11, 0), "q2" = c(4, 2, 2, 5, -10, 99), "q3" = c(-4, -3, 4, 2, 9, 10), "q4" = c(-30, 5, 2, 23, 4, 2), "q5" = c(88, 4, -20, 2, 4, 2) )
+
+invalid.answers <- vector(mode = "numeric", length=6)
+for (i in 1:nrow(survey)) {
+  if (survey[i,2] > 5|survey[i,2] < 1) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  } 
+  if (survey[i,3] > 5|survey[i,3] < 1) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  } 
+  if (survey[i,4] > 5|survey[i,4] < 1) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  } 
+  if (survey[i,5] > 5|survey[i,5] < 1) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  } 
+  if (survey[i,6] > 5|survey[i,6] < 1) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  }
+  survey$invalid.answers <- invalid.answers
+}
+survey
+```
+Combining 3A and 3B
+```{r}
+survey <- data.frame( "participant" = c(1, 2, 3, 4, 5, 6), "q1" = c(5, 3, 2, 7, 11, 0), "q2" = c(4, 2, 2, 5, -10, 99), "q3" = c(-4, -3, 4, 2, 9, 10), "q4" = c(-30, 5, 2, 23, 4, 2), "q5" = c(88, 4, -20, 2, 4, 2) )
+
+survey.clean <- survey[NULL,]
+for (i in 1:nrow(survey)) {
+  ifelse(survey[i,2] > 5|survey[i,2] < 1, survey[i,2] <- NA, NA)
+  ifelse(survey[i,3] > 5|survey[i,3] < 1, survey[i,3] <- NA, NA)
+  ifelse(survey[i,4] > 5|survey[i,4] < 1, survey[i,4] <- NA, NA)
+  ifelse(survey[i,5] > 5|survey[i,5] < 1, survey[i,5] <- NA, NA)
+  ifelse(survey[i,6] > 5|survey[i,6] < 1, survey[i,6] <- NA, NA)
+  survey.clean <- rbind(survey.clean,survey[i,])
+}
+
+invalid.answers <- vector(mode = "numeric", length=6)
+for (i in 1:nrow(survey)) {
+  if (is.na(survey[i,2])) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  } 
+  if (is.na(survey[i,3])) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  } 
+  if (is.na(survey[i,4])) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  } 
+  if (is.na(survey[i,5])) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  } 
+  if (is.na(survey[i,6])) {
+    invalid.answers[i] <- invalid.answers[i] + 1
+  }
+  survey.clean$invalid.answers <- invalid.answers
+}
+survey.clean
+```
